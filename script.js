@@ -4,17 +4,17 @@ function parseHTML() {
     let parser = new DOMParser();
     let parsedDocument = parser.parseFromString(htmlInput, 'text/html');
 
-    return getTimetableData(parsedDocument);
+    return extractTimetableData(parsedDocument);
 }
 
-function getTimetableData(timetableHTML) {
+function extractTimetableData(timetableHTML) {
     let timetables = timetableHTML.getElementsByClassName("tbltimetable");
     let visualTimetable = timetables[0]; // mainly used to extract the room number of the class
     let textTimetable = timetables[1]; // used to extract the rest of the data
 
     // the code below maps the room number to its lesson type, which is mapped to its course code
     let days = visualTimetable.getElementsByClassName("day");
-    let coursesRoomNumber = {};
+    let courseRooms = {};
 
     for (let day of days) {
         let lessons = day.parentElement.getElementsByClassName("unit");
@@ -31,11 +31,11 @@ function getTimetableData(timetableHTML) {
             let lessonType = lessonInfos[indexDelimiter + 1];
             let lessonRoom = String(lesson.firstChild.data);
 
-            if (!(courseCode in coursesRoomNumber)) {
-                coursesRoomNumber[courseCode] = {};
+            if (!(courseCode in courseRooms)) {
+                courseRooms[courseCode] = {};
             }
 
-            coursesRoomNumber[courseCode][lessonType] = lessonRoom;
+            courseRooms[courseCode][lessonType] = lessonRoom;
         }
     }
 
@@ -91,8 +91,8 @@ function getTimetableData(timetableHTML) {
         let courseCode = courseCleansedRow["courseCode"];
         let classType = courseCleansedRow["classType"];
         
-        if (classType in coursesRoomNumber[courseCode]) {
-            courseCleansedRow["roomNumber"] = coursesRoomNumber[courseCode][classType];
+        if (classType in courseRooms[courseCode]) {
+            courseCleansedRow["roomNumber"] = courseRooms[courseCode][classType];
         }
         else {
             courseCleansedRow["roomNumber"] = "";
