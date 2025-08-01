@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UTAR Timetable</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" 
+    rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+
+<body style="text-align: center;">
+    <div class="info">
+        <p>Current flaws/assumptions:</p>
+        <p>Assumes all classes are physical, which means that they all have a physical room </p>
+        <p>Assumes all classes have groups such as lecture, practical or tutorial</p>
+        <p>rowSpan section is very hard-coded, whole thing will fail if they decided to revamp the table</p>
+        <p>The naming sucks, might have to rename some of the variables</p>
+    </div>
+
+    <div class="form-input">
+        <textarea id="html-input" rows="10" cols="80" placeholder="Paste HTML here..."></textarea>
+        <br>
+        <button onclick="parseHTML()">Submit HTML</button>
+    </div>
+
+    <script src="./script.js"></script>    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+
+</html>

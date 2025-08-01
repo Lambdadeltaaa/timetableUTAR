@@ -1,0 +1,1 @@
+A very random project that came out of my mind because im lazy to manually write each entries to my calendar 
