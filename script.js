@@ -9,8 +9,8 @@ function parseHTML() {
 
 function extractTimetableData(timetableHTML) {
     let timetables = timetableHTML.getElementsByClassName("tbltimetable");
-    let visualTimetable = timetables[0]; // mainly used to extract the room number of the class
-    let textTimetable = timetables[1]; // used to extract the rest of the data
+    let visualTimetable = timetables[0]; // mainly used to extract the room number of each class
+    let textTimetable = timetables[1]; // used to extract the all the remaining data of each class
 
     // the code below maps the room number to its lesson type, which is mapped to its course code
     let days = visualTimetable.getElementsByClassName("day");
