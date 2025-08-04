@@ -12,7 +12,7 @@ function extractTimetableData(timetableHTML) {
     let visualTimetable = timetables[0]; // mainly used to extract the room number of each class
     let textTimetable = timetables[1]; // used to extract the all the remaining data of each class
 
-    // the code below maps the room number to its lesson type, which is mapped to its course code
+    // the code chunk below maps the room number to its lesson type, which is mapped to its course code
     let days = visualTimetable.getElementsByClassName("day");
     let courseRooms = {};
 
@@ -39,67 +39,61 @@ function extractTimetableData(timetableHTML) {
         }
     }
 
-    // the code below now gets all the relevant datas of a class period, bundles them in an object and appends them to a list
-    let coursesRow = textTimetable.querySelectorAll("tr");
-    let coursesCleansedRow = [];
+    // the code chunk below now gets all the remaining datas of a class period, bundles them in an object and appends them to a list
+    let courseTableRows = textTimetable.querySelectorAll("tr");
+    let courseTableHeaders = ["number", "courseCode", "courseName", "lessonType", "classGroup", "attendance", "day", "time", 'hours'];
+    let courseSchedules = [];
 
-    for (let i = 1; i < coursesRow.length; i++) {
-        let courseData = coursesRow[i].querySelectorAll("td");
+    for (let i = 1; i < courseTableRows.length; i++) {
+        let courseDatas = courseTableRows[i].querySelectorAll("td");
+        let rowSpanLength = +courseDatas[0].getAttribute("rowspan");
 
-        rowSpan = +courseData[0].getAttribute("rowspan");
-        if (rowSpan > 1) {   // Have row Spanning condition
-            let cleansedRow = {}
-            let savedCourseCode = (cleansedRow["courseCode"] = courseData[1].querySelector("a").innerHTML);
-            let savedCourseName = (cleansedRow["courseName"] = courseData[2].innerHTML);
-            let savedClassType = (cleansedRow["classType"] = courseData[3].innerHTML);
-            let savedClassGroup = (cleansedRow["classGroup"] = courseData[4].innerHTML);
-            cleansedRow["day"] = courseData[6].innerHTML;
-            cleansedRow["time"] = courseData[7].innerHTML;
-            coursesCleansedRow.push(cleansedRow);
+        if (rowSpanLength > 1) {
+            // populate shared data list, puts empty string if its not shared
+            let sharedDatas = Array.from(courseDatas).map((value) => (
+                (+value.getAttribute("rowspan") === rowSpanLength) ? value : ""
+            ))
 
-            for (let j = i+1; j < i+rowSpan; j++) {
-                let courseData = coursesRow[j].querySelectorAll("td");
-                let cleansedRow = {}
+            // begin transferring the data to the main array for storage
+            for (let j = i; j < i + rowSpanLength; j++) {
+                let uniqueDatas = courseTableRows[j].querySelectorAll("td:not([rowspan])");
+                let unique_ptr = 0;
 
-                cleansedRow["courseCode"] = savedCourseCode;
-                cleansedRow["courseName"] = savedCourseName;
-                cleansedRow["classType"] = savedClassType;
-                cleansedRow["classGroup"] = savedClassGroup;
-                cleansedRow["day"] = courseData[0].innerHTML;
-                cleansedRow["time"] = courseData[1].innerHTML;
-                coursesCleansedRow.push(cleansedRow);
+                let schedule = Object.fromEntries(
+                    courseTableHeaders.map((header, index) => (
+                        (sharedDatas[index] === "") 
+                            ? [header, extractInnerHTML(uniqueDatas[unique_ptr++])] 
+                            : [header, extractInnerHTML(sharedDatas[index])]
+                    ))
+                )
+                courseSchedules.push(schedule);
             }
-
-            i += rowSpan - 1;
-            continue;
+            
+            // to sync the iterator again after repeated looping
+            i += rowSpanLength - 1;
         }
-
-        else {    // No row spanning condition
-            let cleansedRow = {}
-            cleansedRow["courseCode"] = courseData[1].querySelector("a").innerHTML;
-            cleansedRow["courseName"] = courseData[2].innerHTML;
-            cleansedRow["classType"] = courseData[3].innerHTML;
-            cleansedRow["classGroup"] = courseData[4].innerHTML;
-            cleansedRow["day"] = courseData[6].innerHTML;
-            cleansedRow["time"] = courseData[7].innerHTML;
-            coursesCleansedRow.push(cleansedRow);
-        }
-    }
-
-    // enrich rows with their respective locations
-    for (let courseCleansedRow of coursesCleansedRow) {
-        let courseCode = courseCleansedRow["courseCode"];
-        let classType = courseCleansedRow["classType"];
-        
-        if (classType in courseRooms[courseCode]) {
-            courseCleansedRow["roomNumber"] = courseRooms[courseCode][classType];
-        }
+            
         else {
-            courseCleansedRow["roomNumber"] = "";
+            let schedule = {};
+            for (let k = 0; k < courseDatas.length; k++) {
+                schedule[courseTableHeaders[k]] = extractInnerHTML(courseDatas[k]);
+            }
+            courseSchedules.push(schedule);
         }
     }
 
-    for (let course of coursesCleansedRow) {
-        console.log(course);
+    // enrich the data with their respective room location
+    for (let courseSchedule of courseSchedules) {
+        courseSchedule["roomNumber"] = courseRooms[courseSchedule.courseCode]?.[courseSchedule.lessonType] ?? "N/A";
     }
+
+    
+    // debugging purposes
+    for (schedule of courseSchedules) {
+        console.log(schedule);
+    }
+}
+
+function extractInnerHTML(data) {
+    return data.querySelector('a')?.innerHTML ?? data.innerHTML;
 }
