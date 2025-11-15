@@ -11,31 +11,49 @@ function parseHTML() {
 }
 
 
-// Assumptions:
-// The timetable element has class "tbltimetable"
-// Each row of the timetable contain a <th> cell with class "day", indicating which day it is.
-// Each row of the timetable contains <td> cells with class "unit", which represents classes.
-// Each "unit" contains:
-//     - First child with textContent containing location of the class
-//     - <span> element with textContent in the EXACT format "COURSECODE(TYPE)(GROUP)"
+
+const CLASSNAMES = {
+    timetableTable: "tbltimetable",
+    courseTable: "tblnoborder",
+    dayHeader: "day",
+    unitCell: "unit"
+}
+
+const TIMETABLE = {
+    startHour: 7,
+    periodDuration: 0.5
+}
+
+/* Assumptions:
+- The timetable element has class "tbltimetable"
+- Each row of the timetable contain a <th> cell with class "day", indicating which day it is.
+- Each row of the timetable contains <td> cells with class "unit", which represents classes.
+
+- Each "unit" contains:
+    - First child with textContent containing location of the class
+    - <span> element with textContent in the EXACT format "COURSECODE(TYPE)(GROUP)"
+
+- UTAR timetable HTML uses a 30-minute grid with each day starting at 7AM 
+*/
 function extractTimetableData(timetableHTML) {
-    let timetable = timetableHTML.getElementsByClassName("tbltimetable")[0];
+    let timetable = timetableHTML.getElementsByClassName(CLASSNAMES.timetableTable)[0];
     let classInfos = [];
 
-    // UTAR timetable HTML uses a 30-minute grid with each day starting at 7AM
-    let dayTime = 7;           
-    let periodDuration = 0.5;  
+    let dayTime = TIMETABLE.startHour;           
+    let periodDuration = TIMETABLE.periodDuration;  
 
     let courseNames = getCourseNames(timetableHTML);
-    let days = timetable.getElementsByClassName("day");
+    let days = timetable.getElementsByClassName(CLASSNAMES.dayHeader);
 
     for (let day of days) {
         let tableRow = day.parentElement;
         let tableCells = tableRow.cells;
 
-        let currentPeriod = -1; // Starts at -1 because the table header is counted in the cells
+        let currentPeriod = 0;
         for (let cell of tableCells) {
-            if (!cell.classList.contains("unit")) {
+            if (cell.tagName == "TH") continue; // skips table header
+            
+            if (!cell.classList.contains(CLASSNAMES.unitCell)) {
                 currentPeriod += 1;
                 continue;
             }
@@ -52,7 +70,7 @@ function extractTimetableData(timetableHTML) {
             info["classType"] = textInfo[separator + 1];
             info["classGroup"] = textInfo.slice(separator + 4, -1);
 
-            let numberPeriods = +cell.colSpan;
+            let numberPeriods = +(cell.colSpan || 1);
             info["duration"] = (numberPeriods * periodDuration).toFixed(1);
 
             info["startTime"] = formatTime(dayTime, currentPeriod, periodDuration);
@@ -67,7 +85,7 @@ function extractTimetableData(timetableHTML) {
 }
 
 // Helper function for extractTimetableData
-// Format time in 24h format
+// Formats time in 24h format
 function formatTime(dayTime, currentPeriod, periodDuration) {
     let currentTime = dayTime + (currentPeriod * periodDuration);
     let hour = Math.trunc(currentTime);
@@ -78,7 +96,7 @@ function formatTime(dayTime, currentPeriod, periodDuration) {
 // Helper function for extractTimetableData
 // Assumption: The table element containing Course Code and Course Name data has class "tblnoborder"
 function getCourseNames(timetableHTML) {
-    let courseTable = timetableHTML.getElementsByClassName("tblnoborder")[0];
+    let courseTable = timetableHTML.getElementsByClassName(CLASSNAMES.courseTable)[0];
     let tableRows = courseTable.querySelector("tbody").rows;
 
     let courseNames = {};
