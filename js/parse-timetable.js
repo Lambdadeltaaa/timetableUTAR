@@ -39,7 +39,7 @@ function extractTimetableData(timetableHTML) {
     let timetable = timetableHTML.getElementsByClassName(CLASSNAMES.timetableTable)[0];
     let classInfos = [];
 
-    let dayTime = TIMETABLE.startHour;           
+    let dayStartHour = TIMETABLE.startHour;           
     let periodDuration = TIMETABLE.periodDuration;  
 
     let courseNames = getCourseNames(timetableHTML);
@@ -73,9 +73,9 @@ function extractTimetableData(timetableHTML) {
             let numberPeriods = +(cell.colSpan || 1);
             info["duration"] = (numberPeriods * periodDuration).toFixed(1);
 
-            info["startTime"] = formatTime(dayTime, currentPeriod, periodDuration);
+            info["startTime"] = formatTime(dayStartHour, currentPeriod, periodDuration);
             currentPeriod += numberPeriods;
-            info["endTime"] = formatTime(dayTime, currentPeriod, periodDuration);
+            info["endTime"] = formatTime(dayStartHour, currentPeriod, periodDuration);
 
             classInfos.push({...info});
         }
@@ -86,11 +86,11 @@ function extractTimetableData(timetableHTML) {
 
 // Helper function for extractTimetableData
 // Formats time in 24h format
-function formatTime(dayTime, currentPeriod, periodDuration) {
-    let currentTime = dayTime + (currentPeriod * periodDuration);
+function formatTime(dayStartHour, currentPeriod, periodDuration) {
+    let currentTime = dayStartHour + (currentPeriod * periodDuration);
     let hour = Math.trunc(currentTime);
     let minute = (currentTime % 1) * 60;
-    return `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
+    return `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`; 
 }
 
 // Helper function for extractTimetableData
