@@ -1,16 +1,17 @@
-submitHTMLButton = document.getElementById("html-submit");
-submitHTMLButton.addEventListener("click", parseHTML);
+/* parse-timetable.js:
+-  INPUT: TIMETABLE HTML OF USER'S
+-  OUTPUT: RELEVANT TIMETABLE IN THE FORM OF OBJECT, FURTHER EXPLAINED IN edit-timetable.js
+*/
 
-function parseHTML() {
-    let htmlInput = document.getElementById("html-input").value;
-
+export function parseHTML(HTMLInput) {
     let parser = new DOMParser();
-    let parsedDocument = parser.parseFromString(htmlInput, 'text/html');
+    let parsedDocument = parser.parseFromString(HTMLInput, 'text/html');
 
-    extractTimetableData(parsedDocument);
+    let timetableData = extractTimetableData(parsedDocument);
+    return timetableData;
 }
 
-
+//-----------------------------------------------------------------------------------------
 
 const CLASSNAMES = {
     timetableTable: "tbltimetable",
@@ -81,7 +82,8 @@ function extractTimetableData(timetableHTML) {
         }
     }
 
-    console.log(classInfos);
+    console.log(classInfos); // debugging purposes
+    return {classInfos, courseNames};
 }
 
 // Helper function for extractTimetableData
