@@ -1,0 +1,25 @@
+.edit-name-input {
+    width: 100%;
+}
+
+.subject-items-list {
+    list-style: none;
+}
+
+.calendar-event {
+    background-color: rgb(255, 166, 0);
+    border-radius: 5px;
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+.event-subject {
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.event-time {
+    padding-left: 8px;
+    padding-right: 8px;
+    margin-bottom: 0px;
+}

@@ -1,6 +1,6 @@
 /* parse-timetable.js:
-- INPUT: TIMETABLE HTML OF USER'S
-- OUTPUT: RELEVANT TIMETABLE IN THE FORM OF OBJECT, FURTHER EXPLAINED IN edit-timetable.js
+- INPUT: string HTMLInput, HTML document of user's timetable webpage
+- OUTPUT: object timetableData, contains relevant timetable info, further explained edit-timetable.js
 */
 
 export function parseHTML(HTMLInput) {
@@ -18,12 +18,12 @@ const CLASSNAMES = {
     courseTable: "tblnoborder",
     dayHeader: "day",
     unitCell: "unit"
-}
+};
 
 const TIMETABLE = {
     startHour: 7,
     periodDuration: 0.5
-}
+};
 
 /* Assumptions:
 - The timetable element has class "tbltimetable"
@@ -81,7 +81,6 @@ function extractTimetableData(timetableHTML) {
         }
     }
 
-    console.log(classInfos); // debugging purposes 
     return {classInfos, courseNames};
 }
 
