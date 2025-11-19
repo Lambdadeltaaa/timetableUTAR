@@ -1,6 +1,6 @@
 /* parse-timetable.js:
--  INPUT: TIMETABLE HTML OF USER'S
--  OUTPUT: RELEVANT TIMETABLE IN THE FORM OF OBJECT, FURTHER EXPLAINED IN edit-timetable.js
+- INPUT: TIMETABLE HTML OF USER'S
+- OUTPUT: RELEVANT TIMETABLE IN THE FORM OF OBJECT, FURTHER EXPLAINED IN edit-timetable.js
 */
 
 export function parseHTML(HTMLInput) {
@@ -39,11 +39,11 @@ const TIMETABLE = {
 function extractTimetableData(timetableHTML) {
     let timetable = timetableHTML.getElementsByClassName(CLASSNAMES.timetableTable)[0];
     let classInfos = [];
+    let courseNames = getCourseNames(timetableHTML);
 
     let dayStartHour = TIMETABLE.startHour;           
     let periodDuration = TIMETABLE.periodDuration;  
 
-    let courseNames = getCourseNames(timetableHTML);
     let days = timetable.getElementsByClassName(CLASSNAMES.dayHeader);
 
     for (let day of days) {
@@ -67,7 +67,6 @@ function extractTimetableData(timetableHTML) {
             let textInfo = cell.querySelector("span").textContent; 
             let separator = textInfo.indexOf("(");
             info["courseCode"] = textInfo.slice(0, separator);
-            info["courseName"] = courseNames[info["courseCode"]];
             info["classType"] = textInfo[separator + 1];
             info["classGroup"] = textInfo.slice(separator + 4, -1);
 
@@ -82,7 +81,7 @@ function extractTimetableData(timetableHTML) {
         }
     }
 
-    console.log(classInfos); // debugging purposes
+    console.log(classInfos); // debugging purposes 
     return {classInfos, courseNames};
 }
 

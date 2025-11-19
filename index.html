@@ -10,15 +10,36 @@
     rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 
-<body style="text-align: center;">
-    <div class="info">
+<body>
+    <div class="info container-fluid text-center">
         <h2>UTAR Timetable Maker</h4>
         <p>NOTE: Assumes all classes are physical, which means that they all have a physical room such as A002. </p>
     </div>
 
-    <div class="input">
+    <div class="input container-fluid text-center">
         <textarea id="html-input" rows="10" cols="80" placeholder="Paste HTML here..."></textarea><br>
         <button id="html-submit">Submit HTML</button>
+    </div>
+
+    <br>
+
+    <!-- This part below is dynamically generated from JavaScript. Refer to ./js/edit-timetable.js -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="edit-timetable col">
+                <div class="edit-course-name">
+
+                </div>
+
+                <div class="edit-calendar-subject">
+
+                </div>
+            </div>
+            
+            <div class="preview-timetable col">
+
+            </div>
+        </div>
     </div>
 
     <script type="module" src="./js/main.js"></script>    
