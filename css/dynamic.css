@@ -4,20 +4,31 @@
 
 .subject-items-list {
     list-style: none;
+    padding-left: 0px;
+}
+
+.day-row {
+    margin-bottom: 24px;
+}
+.day-row-label {
+    border-right: 1px solid black;
+    text-align: right;
+    font-weight: bold;
+}
+.day-row-events {
+    text-align: left;
 }
 
 .calendar-event {
+    width: fit-content;
     background-color: rgb(255, 166, 0);
     border-radius: 5px;
-    margin-top: 16px;
     margin-bottom: 16px;
 }
-
 .event-subject {
     padding-left: 8px;
     padding-right: 8px;
 }
-
 .event-time {
     padding-left: 8px;
     padding-right: 8px;

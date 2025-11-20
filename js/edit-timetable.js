@@ -1,7 +1,7 @@
 /* edit-timetable.js 
 - INPUT: object timetableData
-- timetableData.classInfos: array of lessons (objects), containing informations such as time as keys, and their data as values
-- timetableData.courseNames: an object with course code as keys, and course name as values
+- timetableData.classInfos: array of lessons (objects), these lessons contains info s.a. time as keys and their data as values.
+- timetableData.courseNames: an object that containing course codes as keys and course names as values
 */
 
 import Sortable from "https://cdn.jsdelivr.net/npm/sortablejs@latest/modular/sortable.esm.js";
@@ -29,9 +29,13 @@ export function renderTimetableEditor(timetableData) {
     editCalendarSubjectDiv.appendChild(calendarSubjectToggler);
 
 
+    // creates a method that help writes calendar event subject for timetableData object.
+    createWriteEventMethod(timetableData);
+
     // Initialise Timetable Preview.
     initialiseTimetablePreview(timetableData);
 }
+
 
 
 // Creates a table element that contains course code and name info for viewing.
@@ -82,11 +86,18 @@ function createTableRow(rowData, cellType, timetableData) {
     editButton.addEventListener("click", () => {
         let editingCell = tableRow.cells[1];
 
-        if (editButton.textContent === "Edit") {
-            let currentCourseName = editingCell.textContent;
-            editingCell.innerHTML = `<input type="text" class="edit-name-input" value="${currentCourseName}">`;
-            editButton.textContent = "Save";
-        }
+            if (editButton.textContent === "Edit") {
+                let currentCourseName = editingCell.textContent;
+
+                editingCell.textContent = "";
+                let inputField = document.createElement("input");
+                inputField.type = "text"
+                inputField.classList.add("edit-name-input");
+                inputField.value = currentCourseName;
+                editingCell.appendChild(inputField)
+                
+                editButton.textContent = "Save";
+            }
         else {
             // overwrite name for front-end HTML viewing
             let input = editingCell.querySelector("input");
@@ -111,23 +122,52 @@ function createTableRow(rowData, cellType, timetableData) {
 }
 
 
-// Creates a list element that contains items to be included in the Subject section of the calendar
-// Users can check/uncheck the items to decide whether or not to put them inside of the Subject, which changes timetable preview
-// Users can also drag the items to change the order of the content later in the Subject, which changes timetable preview as well
+
+/*
+- Creates a HTML list element that displays items to be included or not by user in the calendar event subjects
+- Creates two new properties for timetableData: 
+    - subjectItemsStatus is an object that have the item ids as keys and checked status as values
+    - subjectItemOrder is an array containing the order of the item ids.
+
+- Users can check/uncheck the items to decide whether or not to put them inside of the subjects, 
+  which updates timetable preview and timetableData.subjectItemsStatus
+- Users can also drag the items to change the order of the content in the subjects, 
+  which updates timetable preview and timetableData.subjectItemsOrder 
+*/
 function createCalendarSubjectToggler(timetableData) {
     let subjectItemsId = ["course-code", "course-name", "class-type", "class-group", "class-location"];
     let subjectItemsDescription = ["Course Code", "Course Name", "Class Type", "Class Group", "Class Location"];
 
+    // create new properties for timetableData
+    timetableData["subjectItemsStatus"] = {};
+    timetableData["subjectItemsOrder"] = [];
+
+    // create the HTML list
     let subjectItemsList = document.createElement("ul");
     subjectItemsList.classList.add("subject-items-list")
     
     subjectItemsId.forEach((id, index) => {
         let item = document.createElement("li");
         
-        item.innerHTML = `<input type="checkbox" id="${id}" checked>
-                            <label for="${id}">${subjectItemsDescription[index]}</label>`;
+        // creating the input checkbox form
+        let checkboxInput = document.createElement("input");
+        checkboxInput.type = "checkbox";
+        checkboxInput.id = id;
+        checkboxInput.checked = true;
+        item.appendChild(checkboxInput);
+
+        item.appendChild(document.createTextNode(" "));
+
+        let labelCheckbox = document.createElement("label");
+        labelCheckbox.htmlFor = id;
+        labelCheckbox.textContent = subjectItemsDescription[index];
+        item.appendChild(labelCheckbox);
+
+        // populate newly generated properties of timetableData
+        timetableData["subjectItemsStatus"][id] = true;
+        timetableData["subjectItemsOrder"].push(id);
     
-        // prevents user from checking no items, if no problems then modifys the timetable preview.
+        // prevents user from checking no items, if no problems then updates the timetable preview and timetableData.subjectItemsStatus.
         item.addEventListener("change", e => {
             let nodes = subjectItemsList.querySelectorAll("input");
             let somethingChecked = false;
@@ -141,6 +181,7 @@ function createCalendarSubjectToggler(timetableData) {
                 e.target.checked = true;
             }
             else {
+                timetableData["subjectItemsStatus"][e.target.id] = e.target.checked;
                 updateTimetablePreview(timetableData);
             }
         });
@@ -148,15 +189,60 @@ function createCalendarSubjectToggler(timetableData) {
         subjectItemsList.appendChild(item);
     });
 
-    // enable drag and drop reordering to modify timetable preview, imported from Sortable.js
+    // enable drag and drop reordering to modify timetable preview and timetableData.subjectItemsOrder, imported from Sortable.js
     new Sortable(subjectItemsList, {
         animation: 150,
         ghostClass: "blue-background-class",
-        onEnd: () => updateTimetablePreview(timetableData)
+        onEnd: () => {updateItemsOrder(timetableData); updateTimetablePreview(timetableData);}
     });
 
     return subjectItemsList;
 }
+
+// Helper function for createCalendarSubjectToggler
+// Tracks the order of the calendar subject items by querying the div.
+// Triggered when user drag/drop the items.
+function updateItemsOrder(timetableData) {
+    let subjectEditor = document.getElementsByClassName("edit-calendar-subject")[0];
+    let subjectItems = subjectEditor.querySelectorAll("input");
+
+    timetableData["subjectItemsOrder"] = [];
+    Array.from(subjectItems).forEach(subjectItem => {
+        timetableData["subjectItemsOrder"].push(subjectItem.id);
+    });
+}
+
+
+
+// Creates a new method for timetableData. 
+// Used by {initialise/update}TimetablePreview and can be used in exporting CSV.
+// Queries this.subjectItemsOrder, containing the id of items to be wrote in subject in order.
+// Checks with this.subjectItemsStatus, append the corresponding item data into the subject if user checked it.
+function createWriteEventMethod(timetableData) {
+    timetableData["writeEventSubject"] = function (classInfo) {
+        let courseNames = this.courseNames;
+        let classTypeMap = {"L": "LECTURE", "P": "PRACTICAL", "T": "TUTORIAL"};
+
+        let timetableFieldMap = {
+            "course-code": classInfo.courseCode, 
+            "course-name": courseNames[classInfo.courseCode], 
+            "class-type": classTypeMap[classInfo.classType], 
+            "class-group": `(GROUP ${classInfo.classGroup})`, 
+            "class-location": classInfo.classLocation
+        };
+
+        let subjectItemsStatus = this.subjectItemsStatus;
+        let subjectItemsOrder = this.subjectItemsOrder;
+
+        let textContent = "";
+        for (let subjectItem of subjectItemsOrder) {
+            if (subjectItemsStatus[subjectItem] === true) textContent += `${timetableFieldMap[subjectItem]} `
+        }
+
+        return textContent.trim();
+    };
+}
+
 
 
 // Builds the DIV that shows the timetable preview.
@@ -169,6 +255,28 @@ function initialiseTimetablePreview(timetableData) {
     previewTimetableHeader.textContent = "Timetable Preview:";
     previewTimetableDiv.appendChild(previewTimetableHeader);
 
+    // Creates rows that groups each calendar events with their respective day.
+    let days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    for (let day of days) {
+        let dayRow = document.createElement("div");
+        dayRow.classList.add("row", "day-row");
+
+        let label = document.createElement("div");
+        label.classList.add("col-2", "day-row-label");
+        let labelText = document.createElement("p");
+        labelText.textContent = `${day}`;
+        label.appendChild(labelText);
+        dayRow.append(label);
+
+        let events = document.createElement("div");
+        events.classList.add("col-10", "day-row-events");
+        events.id = `${day.toLowerCase()}-events`;
+        dayRow.append(events);
+
+        previewTimetableDiv.appendChild(dayRow);
+    }
+
+    // Iterates over classInfos to create calendar events, and append them to their respective day divs.
     timetableData.classInfos.forEach((classInfo, index) => { 
         let calendarEventDiv = document.createElement("div");
         calendarEventDiv.classList.add("calendar-event");
@@ -176,7 +284,7 @@ function initialiseTimetablePreview(timetableData) {
         let eventSubject = document.createElement("p");
         eventSubject.classList.add("event-subject");
         eventSubject.id = `event-${index}`;
-        eventSubject.textContent = writeEventSubject(classInfo, timetableData.courseNames);
+        eventSubject.textContent = timetableData.writeEventSubject(classInfo);
         calendarEventDiv.appendChild(eventSubject);
 
         let eventTime = document.createElement("p");
@@ -184,7 +292,17 @@ function initialiseTimetablePreview(timetableData) {
         eventTime.textContent = `${classInfo.startTime} - ${classInfo.endTime}`;
         calendarEventDiv.appendChild(eventTime);
 
-        previewTimetableDiv.appendChild(calendarEventDiv);
+        let eventDay = classInfo.day;
+        let dayEventsRow = document.getElementById(`${eventDay.toLowerCase()}-events`);
+        dayEventsRow.append(calendarEventDiv);
+    });
+
+    // Deletes any day rows that are empty (no events)
+    let eventRows = document.getElementsByClassName("day-row-events");
+    Array.from(eventRows).forEach(eventRow => {
+        if (eventRow.childElementCount === 0) {
+            eventRow.parentElement.remove();
+        }
     });
 }
 
@@ -193,35 +311,6 @@ function updateTimetablePreview(timetableData) {
     timetableData.classInfos.forEach((classInfo, index) => {
         let eventSubjectId = `event-${index}`;
         let eventSubject = document.getElementById(eventSubjectId);
-        eventSubject.textContent = writeEventSubject(classInfo, timetableData.courseNames);
+        eventSubject.textContent = timetableData.writeEventSubject(classInfo);
     });
-}
-
-// Helper function for {initialise/update}TimetablePreview.
-// Queries all elements <input> ids in order, contained inside the edit calendar subject div.
-// Appends the corresponding classData into subject for all checked inputs.
-function writeEventSubject(classInfo, courseNames) {
-    let classTypeMap = {
-    "L": "LECTURE",
-    "P": "PRACTICAL",
-    "T": "TUTORIAL"
-    };
-
-    let timetableFieldMap = {
-        "course-code": classInfo.courseCode, 
-        "course-name": courseNames[classInfo.courseCode], 
-        "class-type": classTypeMap[classInfo.classType], 
-        "class-group": `(GROUP ${classInfo.classGroup})`, 
-        "class-location": classInfo.classLocation
-    };
-
-    let subjectEditor = document.getElementsByClassName("edit-calendar-subject")[0];
-    let subjectItems = subjectEditor.querySelectorAll("input");
-
-    let textContent = ""
-    for (let subjectItem of subjectItems) {
-        if (subjectItem.checked === true) textContent += `${timetableFieldMap[subjectItem.id]} `;
-    }
-
-    return textContent;
 }
