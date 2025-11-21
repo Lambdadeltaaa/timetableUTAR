@@ -15,34 +15,32 @@
 </head>
 
 <body>
-    <div class="info container-fluid text-center">
+    <div class="info-display container text-center mb-5">
         <h2>UTAR Timetable Maker</h4>
-        <p>NOTE: Assumes all classes are physical, which means that they all have a physical room such as A002. </p>
+        <p>NOTE: Assumes all classes are physical, which means that they all have a physical room such as A002.</p>
     </div>
 
-    <div class="input container-fluid text-center">
-        <textarea id="html-input" rows="10" cols="80" placeholder="Paste HTML here..."></textarea><br>
-        <button id="html-submit">Submit HTML</button>
+    <div class="data-input container text-center mb-5">
+        <textarea id="html-input" class="form-control" rows="10" placeholder="Paste HTML here..."></textarea><br>
+        <button id="html-submit" class="btn btn-secondary" >Submit HTML</button>
     </div>
 
     <br>
 
     <!-- This part below is dynamically generated from JavaScript. Refer to ./js/edit-timetable.js -->
-    <div class="container-fluid">
+    <div class="data-edit container mb-5">
         <div class="row">
-            <div class="edit-timetable col">
-                <div class="edit-course-name">
-
-                </div>
-                
-                <div class="edit-calendar-subject">
-
-                </div>
+            <div class="edit-timetable col mb-5">
+                <div class="edit-course-name mb-5"></div>
+                <div class="edit-calendar-subject mb-5"></div>
+                <div class="edit-semester-info"></div>
             </div>
             
-            <div class="preview-timetable col">
+            <div class="preview-timetable col mb-5"></div>
+        </div>
 
-            </div>
+        <div class="row">
+            <div class="submit-edit col text-center"></div>
         </div>
     </div>
 
