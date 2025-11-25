@@ -1,0 +1,39 @@
+/* used in function initialiseTimetablePreview(timetableData) from edit-timetable.js */
+.day-row {
+    margin-bottom: 2rem;
+}
+.day-row-label {
+    border-right: 1px solid lightgray;
+    color: lightgray;
+    text-align: right;
+    font-weight: bold;
+}
+.day-row-events {
+    text-align: left;
+}
+
+
+/* used in function initialiseTimetablePreview(timetableData) from edit-timetable.js */
+.calendar-event {
+    overflow-wrap: break-word;
+    word-break: break-word;
+    min-width: 0;
+    width: 100%;
+    background-color: rgba(220, 179, 255, 0.15);
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+}
+.day-row-events > .calendar-event:last-of-type {
+    margin-bottom: 0;
+}
+.event-subject {
+    color: lightgray;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+.event-time {
+    color: lightgray;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-bottom: 0;
+}

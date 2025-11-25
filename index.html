@@ -1,50 +1,110 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>UTAR Timetable</title>
+    <title>UTAR Timetable Maker</title>
+    <link rel="icon" type="image/x-icon" href="./images/calendar-icon.png">
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" 
     rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="./css/static.css">
-    <link rel="stylesheet" href="./css/dynamic.css">
+    <link rel="stylesheet" href="./css/base.css">
+    <link rel="stylesheet" href="./css/timetable.css">
 </head>
 
-<body>
-    <div class="info-display container text-center mb-5">
-        <h2>UTAR Timetable Maker</h4>
-        <p>NOTE: Assumes all classes are physical, which means that they all have a physical room such as A002.</p>
+<body class="main-bg">
+    <div class="info-display container mt-6 mb-2 text-center fade show">
+        <!-- (100vh - 6rem) to make the entire viewport the header since mt-6 is used-->
+        <header style="height: calc(100vh - 6rem);">
+            <img src="./images/calendar-icon.png" alt="calendar-icon" class="mb-3 col-6 col-md-3">
+            <h1 class="main-header-text fw-semibold display-1 mb-3">UTAR Timetable Maker</h1>
+            <h2 class="main-body-text fw-normal mx-auto mb-6 col-md-6">Process your timetable in just a few clicks and makes it Google-Calendar ready along with customisable options.</h2>
+            <img src="./images/arrow-down-icon.png" alt="arrow-down">
+        </header>
+
+        <hr style="color: lightgray">
+
+        <section>
+            <h3 class="main-header-text fw-semibold display-3 mb-5">Instructions:</h1>
+            
+            <p class="main-body-text fs-3 col-md-8 mx-auto">1. Log in to 
+                <a href="https://portal.utar.edu.my" target="_blank" class="link-primary">UTAR Portal</a>.</p>
+            <img src="./images/instructions-step1.png" alt="step1-visual-aid" class="col-12 col-md-8 border border-light border-3 rounded mb-6">
+            
+            <p class="main-body-text fs-3 col-md-8 mx-auto">2. Open up your timetable webpage.</p>
+            <img src="./images/instructions-step2.gif" alt="step2-visual-aid" class="col-12 col-md-8 border border-light border-3 rounded mb-6" loading="lazy">
+
+            <p class="main-body-text fs-3 col-md-8 mx-auto">3. Press F12, or right click then select inspect to open developer tools. Click on the 'Console' tab.</p>
+            <img src="./images/instructions-step3.gif" alt="step3-visual-aid" class="col-12 col-md-8 border border-light border-3 rounded mb-6" loading="lazy">
+
+            <p class="main-body-text fs-3 col-md-8 mx-auto">4. Copy the command below and paste it into the console.</p>
+            <div class="code-snippet d-flex justify-content-center align-items-center gap-2 mb-3">
+                <!-- break-word and min-width set to 0 so that the code doesnt break the grid container in mobile -->
+                <code id="copy-cmd" class="secondary-bg text-wrap rounded fs-5 p-2 col-12 col-md-9">
+                    copy((window.name === "mainFrame" ? document : document.getElementsByName("mainFrame")[0]?.contentWindow?.document || document ).documentElement.outerHTML);
+                </code>
+
+                <!-- does not show the copy button in mobile -->
+                <button id="copy-cmd-btn" class="main-icon-btn btn p-3 d-none d-md-flex">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16" role="img">
+                        <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1z"/>
+                        <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0z"/>
+                    </svg>
+                </button>
+            </div>
+            <img src="./images/instructions-step4.gif" alt="step4-visual-aid" class="col-12 col-md-8 border border-light border-3 rounded mb-6" loading="lazy">
+
+            <p class="main-body-text fs-3 col-md-8 mx-auto">5. Timetable data output is now saved to your clipboard. Paste it below to begin processing.</p>
+        </section>
     </div>
 
-    <div class="data-input container text-center mb-5">
-        <textarea id="html-input" class="form-control" rows="10" placeholder="Paste HTML here..."></textarea><br>
-        <button id="html-submit" class="btn btn-secondary" >Submit HTML</button>
+    <div class="data-input container text-center fade show">
+        <div class="col-12 col-md-8 mx-auto">
+            <textarea id="html-input" class="form-control border border-light border-3 fs-5" rows="10" placeholder="Paste output here..."></textarea><br>
+            <button id="html-submit" class="main-text-btn btn fs-5 fw-semibold" >Begin Processing</button>
+        </div>
     </div>
 
-    <br>
+    <!-- An alert will be dynamically generated based on the outcome of the parsing via ./js/main.js -->
+    <div class="data-input-alert container mt-5 mb-5"></div>
+
 
     <!-- This part below is dynamically generated from JavaScript. Refer to ./js/edit-timetable.js -->
-    <div class="data-edit container mb-5">
+    <div class="data-edit container mt-5 mb-5"></div>
+    <template id="data-edit-template">
+        <h2 class="main-header-text fw-semibold display-2 text-center mb-5">Edit Your Timetable Settings</h1>
+
         <div class="row">
-            <div class="edit-timetable col mb-5">
-                <div class="edit-course-name mb-5"></div>
-                <div class="edit-calendar-subject mb-5"></div>
-                <div class="edit-semester-info"></div>
+            <div class="edit-timetable col-12 col-md-6 mb-5">
+                <div class="edit-course-name mb-5">
+                    <h3 class="secondary-header-text">Edit Course Name:</h3>
+                </div>
+                
+                <div class="edit-calendar-subject mb-5">
+                    <h3 class="secondary-header-text">Calendar Subjects Includes:</h3>
+                    <p class="main-body-text">You can drag and drop to change the order.</p>
+                </div>
+                
+                <div class="edit-semester-info mb-5">
+                    <h3 class="secondary-header-text">Semester Info:</h3>
+                </div>
+
+                <div class="submit-edit text-end mb-5">
+                    <!-- Submit button goes here -->
+                </div>
             </div>
             
-            <div class="preview-timetable col mb-5"></div>
+            <div class="preview-timetable col-12 col-md-6 mb-5">
+                <h3 class="secondary-header-text">Timetable Preview:</h3>
+            </div>
         </div>
+    </template>
 
-        <div class="row">
-            <div class="submit-edit col text-center"></div>
-        </div>
-    </div>
-
-    <script type="module" src="./js/main.js"></script>    
+    <script type="module" src="./js-logic/main.js"></script>    
+    <script type="module" src="./js-ui/ui.js"></script>    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>

@@ -1,0 +1,73 @@
+/* Bootstrap margin addons */
+.mb-6 { margin-bottom: 6rem !important; }
+.mb-7 { margin-bottom: 7rem !important; }
+.mb-8 { margin-bottom: 8rem !important; }
+.mb-9 { margin-bottom: 9rem !important; }
+
+.mt-6 { margin-top: 6rem !important; }
+.mt-7 { margin-top: 7rem !important; }
+.mt-8 { margin-top: 8rem !important; }
+.mt-9 { margin-top: 9rem !important; }
+
+
+.main-bg {
+    min-height: 100vh;
+    background: radial-gradient(circle, #2c003e 0%, #000428 100%);
+}
+.secondary-bg {
+    background-color: rgba(220, 179, 255, 0.15);
+}
+
+
+.main-header-text {
+    color: #7f7fff;
+}
+.secondary-header-text {
+    color: #99ccff;
+}
+
+
+.main-body-text {
+    color: lightgray;
+}
+.text-wrap {
+    overflow-wrap: break-word; 
+    word-break: break-word;
+    min-width: 0;
+}
+
+
+.table-rounded {
+    border-collapse: separate !important;
+    border-spacing: 0;
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+
+
+.main-text-btn {
+    color: lightgray;
+    background-color: rgb(214, 51, 132);
+}
+.main-text-btn:hover {
+    background-color: rgb(214, 51, 132, 0.75)
+}
+
+
+.main-icon-btn {
+    color: rgb(214, 51, 132);
+}
+.main-icon-btn:hover {
+    background-color: rgba(220, 179, 255, 0.15);
+}
+
+
+#html-input {
+    background: rgba(255, 255, 255, 0.1);  
+    backdrop-filter: blur(6px);
+    color: lightgray;                       
+}
+#html-input::placeholder {
+    color: lightgray;   
+    opacity: 0.75;
+}
