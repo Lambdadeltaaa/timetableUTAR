@@ -1,17 +1,28 @@
 /* edit-timetable.js 
-- INPUT: object timetableData
-    - timetableData.classInfos: [{"courseCode": "MPU32013", "classLocation": "LDK3", ... }, ...]
-    - timetableData.courseNames: {"FHMM1024": "MATHEMATICS II", "FHSC1034": "ORGANIC CHEMISTRY", ...}
+- INPUT: 
+    object timetableData
+    - timetableData.classInfos: example [{"courseCode": "MPU32013", "classLocation": "LDK3", ... }, ...]
+    - timetableData.courseNames: example {"FHMM1024": "MATHEMATICS II", "FHSC1034": "ORGANIC CHEMISTRY", ...}
+    
+    function onComplete (next function to be load after editing is submitted/done)
+
+- NO OUTPUTS, BUT THERE ARE SIDE EFFECTS:
+    adds the follow properties and method to object timetableData
+    - timetableData.subjectItemStatus = example {"course-code": true, "class-location": "false", ...}
+    - timetableData.subjectItemOrder = example ["class-location", "class-group", ...]
+    - timetableData.semesterInfo = example {"semesterLength": 12, "startDate": 2025-11-03}
+    - timetableData.writeEventSubject
 */
 
-import { createAlertText, removeAlertText } from "../js-ui/ui.js";
+import { createAlertText, removeAlertText, collapseUI, expandUI } from "../js-ui/ui-manager.js";
 import Sortable from "https://cdn.jsdelivr.net/npm/sortablejs@latest/modular/sortable.esm.js";
 
-export function renderTimetableEditor(timetableData) {
+export function renderTimetableEditor(timetableData, onComplete) {
     hideInitialUI();
     renderEditorTemplate();
 
     // Creates the UI that allows users to edit timetable/semester data.
+    createBackButton();
     createCourseNameEditor(timetableData);
     createCalendarSubjectToggler(timetableData);
     createSemesterInfoEditor();
@@ -19,12 +30,12 @@ export function renderTimetableEditor(timetableData) {
     // Creates a method for timetableData object that help writes calendar event subjects.
     createWriteEventMethod(timetableData);
 
-    // Initialise Timetable Preview UI.
+    // self explainatory.
     initialiseTimetablePreview(timetableData);
 
     // Creates a button that validates any input that are still unchecked, then inserts them into timetableData.
     // After that, allows user to proceed to the Exporting step.
-    createSubmitButton(timetableData);
+    createSubmitButton(timetableData, onComplete);
 }
 
 
@@ -33,31 +44,47 @@ export function renderTimetableEditor(timetableData) {
 function hideInitialUI() {
     let infoDisplay = document.getElementsByClassName("info-display")[0];
     let dataInput = document.getElementsByClassName("data-input")[0];
-    let sections = [infoDisplay, dataInput];
-
-    let transitionsDone = 0;
-    for (let section of sections) {
-        section.classList.remove("show");
-        section.addEventListener("transitionend", () => {
-            section.classList.add("d-none");
-            transitionsDone++;
-            
-            if (transitionsDone === sections.length) {
-                window.scrollTo({ top: 0, behavior: "smooth"});
-            }
-        }, { once: true });
-    }
+    collapseUI([infoDisplay, dataInput]);
 }
 
 
 
 // Clones the timetable editor template to the HTML.
 function renderEditorTemplate() {
+    let editorUI = document.getElementsByClassName("editor-ui")[0]; // parent div of editTimetableDiv
+    
     let editTimetableDiv = document.getElementsByClassName("data-edit")[0];
     editTimetableDiv.innerHTML = "";
 
     let editorTemplate = document.getElementById("data-edit-template");
     editTimetableDiv.appendChild(editorTemplate.content.cloneNode(true));
+
+    // waits for a while to let the rest of the editor to completely render
+    requestAnimationFrame(() => {
+        expandUI([editorUI]);
+    });
+}
+
+
+
+// Creates button that onclick allows user to back to menu.
+function createBackButton() {
+    let backButtonDiv = document.getElementsByClassName("back-menu-btn")[0];
+
+    let backButton = document.createElement("button");
+    backButton.classList.add("btn", "main-text-btn", "fs-5");
+    backButton.textContent = "Back to Menu";
+
+    backButton.addEventListener("click", () => {
+        let infoDisplay = document.getElementsByClassName("info-display")[0];
+        let dataInput = document.getElementsByClassName("data-input")[0];
+        expandUI([infoDisplay, dataInput]);
+
+        let editorUI = document.getElementsByClassName("editor-ui")[0];
+        collapseUI([editorUI], true);
+    });
+
+    backButtonDiv.appendChild(backButton);
 }
 
 
@@ -94,18 +121,16 @@ function createCourseNameEditor(timetableData) {
 function createTableRow(rowData, cellType, timetableData) {
     let tableRow = document.createElement("tr");
     
-    // create info cells that show course code and name
     for (let data of rowData) {
         let cell = document.createElement(cellType);
         cell.textContent = data;
         tableRow.appendChild(cell);
     }
 
-    // early return since headers doesnt need to be modified
-    if (cellType === "th") return tableRow;
+    if (cellType === "th") return tableRow; // early return since headers doesnt need to be modified
 
 
-    // below code is for <td> elements only
+    // CODE STARTING FROM BELOW ONLY FOR <td> ELEMENTS
     // adding text wraps to <td> containing coursenames so that overly long inputs wont overflow container
     tableRow.cells[1].classList.add("text-wrap");
 
@@ -135,7 +160,7 @@ function createTableRow(rowData, cellType, timetableData) {
         else {
             let courseCode = tableRow.cells[0].textContent;
 
-            // overwrite name for front-end HTML viewing, dont allow blank inputs
+            // overwrite name for front-end HTML viewing, dont allow blank or too long input
             let input = editingCell.querySelector("input");
             let newName = input.value.trim().toUpperCase();
 
@@ -149,10 +174,7 @@ function createTableRow(rowData, cellType, timetableData) {
             editingCell.textContent = newName;
             editButton.textContent = "Edit"
 
-            // overwrite current name inside of timetableData.courseNames
             timetableData.courseNames[courseCode] = newName;
-
-            // also update timetable preview 
             updateTimetablePreview(timetableData);
         }
     });
@@ -200,7 +222,7 @@ function createCalendarSubjectToggler(timetableData) {
         checkboxInput.classList.add("form-check-input", "me-2");
         checkboxInput.type = "checkbox";
         checkboxInput.id = id;
-        checkboxInput.checked = true;
+        checkboxInput.checked = true
         item.appendChild(checkboxInput);
 
         let labelCheckbox = document.createElement("label");
@@ -401,7 +423,7 @@ function updateTimetablePreview(timetableData) {
 
 // The final part of edit-timetable.js 
 // If there is no problems with user inputs, let them proceed to the Exporting section.
-function createSubmitButton(timetableData) {
+function createSubmitButton(timetableData, onComplete) {
     let submitDiv = document.getElementsByClassName("submit-edit")[0];
 
     let submitButton = document.createElement("button");
@@ -410,7 +432,7 @@ function createSubmitButton(timetableData) {
 
     submitButton.addEventListener("click", () => {
         if (validateSemesterInfo(timetableData) === true) {
-            console.log("Step done. Now continue to Exporting step"); // TODO
+            onComplete(timetableData); // go to exporting step.
         }
     });
 

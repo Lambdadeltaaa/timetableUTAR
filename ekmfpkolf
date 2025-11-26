@@ -1,0 +1,131 @@
+[33mcommit b2024abb480312e54ba5076592cc4042310729c9[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Lambdadelta <176888319+Lambdadeltaaa@users.noreply.github.com>
+Date:   Wed Nov 26 01:49:26 2025 +0800
+
+    made the site more interactive, added instructions etc.
+
+[33mcommit 2ef0ff5177d0141bd4ed359cebb7cf42d1ded2b3[m
+Author: Lambdadelta <176888319+Lambdadeltaaa@users.noreply.github.com>
+Date:   Sat Nov 22 04:19:14 2025 +0800
+
+    finished edit-timetable.js core program flow, and added some bootstrap
+
+[33mcommit 60b96947c0d59db210c9cfc2428b96b149649dc0[m
+Author: Lambdadelta <176888319+Lambdadeltaaa@users.noreply.github.com>
+Date:   Fri Nov 21 03:57:19 2025 +0800
+
+    reduced DOM dependency
+
+[33mcommit 083a48d1b66a5faf6169f3b98d5e3b67f5c0815c[m
+Author: Lambdadelta <176888319+Lambdadeltaaa@users.noreply.github.com>
+Date:   Thu Nov 20 06:29:15 2025 +0800
+
+    added timetable preview
+
+[33mcommit 1a06eb4bb4340bc7691c5ebf96563430a10748da[m
+Author: Lambdadelta <176888319+Lambdadeltaaa@users.noreply.github.com>
+Date:   Wed Nov 19 23:37:15 2025 +0800
+
+    added editing course name feature
+
+[33mcommit 397fcb30fd5d32e6a24ee7952f498a1b088d7299[m
+Author: Lambdadelta <176888319+Lambdadeltaaa@users.noreply.github.com>
+Date:   Wed Nov 19 03:40:14 2025 +0800
+
+    created main.js
+
+[33mcommit a5bf0236b5d665f79e329a76489494e945c5ee2a[m
+Author: Lambdadelta <176888319+Lambdadeltaaa@users.noreply.github.com>
+Date:   Sun Nov 16 04:52:33 2025 +0800
+
+    restructured some files organisation
+
+[33mcommit f6b99436d023f515f8ffd35a29523011c513984f[m
+Author: Lambdadelta <176888319+Lambdadeltaaa@users.noreply.github.com>
+Date:   Sun Nov 16 04:16:47 2025 +0800
+
+    added constants list and better documentation
+
+[33mcommit 0f0823f31e4ee684a07024775d87552239d0c9c0[m
+Author: Lambdadelta <176888319+Lambdadeltaaa@users.noreply.github.com>
+Date:   Sun Nov 16 03:39:46 2025 +0800
+
+    code overhaul
+
+[33mcommit 1c2d3cf2d5628b1ccc04f641766b414a954ae042[m
+Author: Lambdadelta <176888319+Lambdadeltaaa@users.noreply.github.com>
+Date:   Sat Nov 15 20:03:37 2025 +0800
+
+    code overhauled
+
+[33mcommit f17689ba7075a69f44e80cc13a5296f2c46bfcdd[m
+Author: Lambdadelta <176888319+Lambdadeltaaa@users.noreply.github.com>
+Date:   Sat Nov 15 04:58:36 2025 +0800
+
+    code overhaul in progress
+
+[33mcommit e8ec301af997c204c4b58b6f6bb8680737258e2a[m
+Author: Lambdadelta <176888319+Lambdadeltaaa@users.noreply.github.com>
+Date:   Sat Nov 15 04:29:35 2025 +0800
+
+    code overhaul in progress
+
+[33mcommit 7a1dc4e8848cc6b34fa3a8176152bad80390cd14[m
+Author: Lambdadelta <176888319+Lambdadeltaaa@users.noreply.github.com>
+Date:   Sat Nov 15 03:43:17 2025 +0800
+
+    modified gitignore
+
+[33mcommit f31404e9abf8c3106be2dcbb68b05f1ac71e35fd[m
+Author: Lambda <176888319+Lambdadeltaaa@users.noreply.github.com>
+Date:   Tue Nov 11 17:12:04 2025 +0800
+
+    Delete LICENSE.md
+
+[33mcommit b6c039d5999233621abb72a8f8d841b324a8318e[m
+Author: Lambda <176888319+Lambdadeltaaa@users.noreply.github.com>
+Date:   Tue Nov 11 17:11:50 2025 +0800
+
+    Create LICENSE
+
+[33mcommit ae3412623a7a1991815a9971be8d354837250641[m
+Author: Lambdadelta <pong778905@gmail.com>
+Date:   Fri Oct 17 02:35:03 2025 +0800
+
+    modified-gitignore
+
+[33mcommit 1461f5aaebd22351eb9dc1e16991a15bf24c6b65[m
+Author: Lambdadelta <pong778905@gmail.com>
+Date:   Tue Aug 5 01:17:30 2025 +0800
+
+    html
+
+[33mcommit 9a94e6fd5e7c3aaf8026a416d45d80fd6d55810f[m
+Author: Lambdadelta <pong778905@gmail.com>
+Date:   Tue Aug 5 01:09:51 2025 +0800
+
+    optimised code
+
+[33mcommit 422952e86528863ba06b8af1e3eebec221880bd6[m
+Author: Lambdadelta <pong778905@gmail.com>
+Date:   Mon Aug 4 22:56:26 2025 +0800
+
+    first commit on new branch
+
+[33mcommit 1e1ddd5291ab322f89a99937e93aa8849ff1a125[m
+Author: Lambdadelta <pong778905@gmail.com>
+Date:   Sat Aug 2 01:17:09 2025 +0800
+
+    changed some variable names
+
+[33mcommit 0cfed42179a4ee08ec9efc63967986cc48487d19[m
+Author: Lambdadelta <pong778905@gmail.com>
+Date:   Sat Aug 2 00:56:13 2025 +0800
+
+    added some random files
+
+[33mcommit cbac37bd7a11b21e8f7d79b2c046d13ca7432ea2[m
+Author: Lambdadelta <pong778905@gmail.com>
+Date:   Sat Aug 2 00:50:49 2025 +0800
+
+    first commit

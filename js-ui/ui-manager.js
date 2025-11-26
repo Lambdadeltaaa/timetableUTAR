@@ -4,7 +4,8 @@
     2. Importing and initialising certain UI components on page load.
 */
 
-export * from "./alert.js";
+export * from "./ui-alerts.js";
+export * from "./ui-expand-collapse.js"
 
-import { setupCopyButton } from "./setup-copy-button.js";
+import { setupCopyButton } from "./setup-copy-btn.js";
 setupCopyButton();

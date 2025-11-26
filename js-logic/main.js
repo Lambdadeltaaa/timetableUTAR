@@ -1,7 +1,8 @@
 import { parseHTML } from "./parse-timetable.js";
 import { renderTimetableEditor } from "./edit-timetable.js";
+import { renderExport } from "./export-timetable.js";
 
-import { createAlertText, removeAlertText } from "../js-ui/ui.js";
+import { createAlertText, removeAlertText } from "../js-ui/ui-manager.js";
 
 // once the user submits the HTML and click, the whole timetable data processing logic runs.
 let submitHTMLButton = document.getElementById("html-submit");
@@ -12,7 +13,9 @@ function main() {
     
     let timetableData = parseHTML(HTMLInput);
     if (handleParseResult(timetableData)) {
-        renderTimetableEditor(timetableData);
+        renderTimetableEditor(timetableData, () => {
+            renderExport(timetableData);
+        });
     }
 }
 
@@ -21,16 +24,18 @@ function main() {
 // Acts as a bridger between parse-timetable.js and edit-timetable.js for main.
 // Provide alerts to notify the user on the outcome of parsing. Returns true if parsing success, and false if it fails.
 function handleParseResult(timetableData) {
-    let alertDiv = document.getElementsByClassName("data-input-alert")[0];
-
-    if (timetableData.error) { // parsing fails
-        createAlertText(alertDiv, timetableData.error, "alert-danger");
+    if (timetableData.error) { 
+        let dataInputDiv = document.getElementsByClassName("parse-fail-alert")[0];
+        createAlertText(dataInputDiv, timetableData.error, "alert-danger");
         return false;
     }
-    else { // parsing succeeds
+    else { 
+        let parseSuccessDiv = document.getElementsByClassName("parse-success-alert")[0];
         let successText = "Timetable successfully processed!";
-        createAlertText(alertDiv, successText, "alert-success");
-        setTimeout(() => {removeAlertText(alertDiv)}, 2000);
+
+        createAlertText(parseSuccessDiv, successText, "alert-success");
+        setTimeout(() => {removeAlertText(parseSuccessDiv)}, 3000);
+        window.scrollTo({ top: 0, behavior: "smooth" });
         return true;
     }
 }

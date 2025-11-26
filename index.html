@@ -42,7 +42,6 @@
 
             <p class="main-body-text fs-3 col-md-8 mx-auto">4. Copy the command below and paste it into the console.</p>
             <div class="code-snippet d-flex justify-content-center align-items-center gap-2 mb-3">
-                <!-- break-word and min-width set to 0 so that the code doesnt break the grid container in mobile -->
                 <code id="copy-cmd" class="secondary-bg text-wrap rounded fs-5 p-2 col-12 col-md-9">
                     copy((window.name === "mainFrame" ? document : document.getElementsByName("mainFrame")[0]?.contentWindow?.document || document ).documentElement.outerHTML);
                 </code>
@@ -61,24 +60,32 @@
         </section>
     </div>
 
-    <div class="data-input container text-center fade show">
+    <div class="data-input container text-center mb-5 fade show">
         <div class="col-12 col-md-8 mx-auto">
             <textarea id="html-input" class="form-control border border-light border-3 fs-5" rows="10" placeholder="Paste output here..."></textarea><br>
             <button id="html-submit" class="main-text-btn btn fs-5 fw-semibold" >Begin Processing</button>
         </div>
+
+        <div class="parse-fail-alert"></div>
     </div>
 
-    <!-- An alert will be dynamically generated based on the outcome of the parsing via ./js/main.js -->
-    <div class="data-input-alert container mt-5 mb-5"></div>
 
-
-    <!-- This part below is dynamically generated from JavaScript. Refer to ./js/edit-timetable.js -->
-    <div class="data-edit container mt-5 mb-5"></div>
+    
+    <!-- This part below is dynamically generated from JavaScript. -->
+    <div class="editor-ui fade d-none">
+        <div class="parse-success-alert container mt-5 mb-5"></div> <!-- Refer to ./js/main.js -->
+        <div class="data-edit container mt-5 mb-5"></div> <!-- Refer to ./js/edit-timetable.js -->
+    </div>
+    
     <template id="data-edit-template">
         <h2 class="main-header-text fw-semibold display-2 text-center mb-5">Edit Your Timetable Settings</h1>
-
+        
         <div class="row">
             <div class="edit-timetable col-12 col-md-6 mb-5">
+                <div class="back-menu-btn mb-5">
+                    <!-- Back to menu button goes here -->
+                </div>
+
                 <div class="edit-course-name mb-5">
                     <h3 class="secondary-header-text">Edit Course Name:</h3>
                 </div>
@@ -104,7 +111,7 @@
     </template>
 
     <script type="module" src="./js-logic/main.js"></script>    
-    <script type="module" src="./js-ui/ui.js"></script>    
+    <script type="module" src="./js-ui/ui-manager.js"></script>    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>

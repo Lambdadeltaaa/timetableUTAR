@@ -9,6 +9,11 @@
 .mt-8 { margin-top: 8rem !important; }
 .mt-9 { margin-top: 9rem !important; }
 
+/* Bootstrap animation override */
+.fade {
+    transition: opacity 0.5s ease !important;
+}
+
 
 .main-bg {
     min-height: 100vh;
