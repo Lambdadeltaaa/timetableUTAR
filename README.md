@@ -3,7 +3,11 @@
 A web app that allows UTAR students to convert their timetable from the UTAR portal into Google Calendar with customizable options like renaming courses and toggling event details.
 
 Click the icon below to open the web app:
-[![Calendar Icon](./images/calendar-icon.png)](https://lambdadeltaaa.github.io/timetableUTAR/)
+<p align="center">
+  <a href="https://lambdadeltaaa.github.io/timetableUTAR/">
+    <img src="./images/calendar-icon.png" alt="Calendar Icon" width="80">
+  </a>
+</p>
 
 
 
