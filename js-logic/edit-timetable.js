@@ -18,11 +18,11 @@ import { createAlertText, removeAlertText, collapseUI, expandUI } from "../js-ui
 import Sortable from "https://cdn.jsdelivr.net/npm/sortablejs@latest/modular/sortable.esm.js";
 
 export function renderTimetableEditor(timetableData, onComplete) {
-    hideInitialUI();
+    hidePreviousUI();
     renderEditorTemplate();
 
     // Creates the UI that allows users to edit timetable/semester data.
-    createBackButton();
+    createBackButtonListener();
     createCourseNameEditor(timetableData);
     createCalendarSubjectToggler(timetableData);
     createSemesterInfoEditor();
@@ -35,13 +35,13 @@ export function renderTimetableEditor(timetableData, onComplete) {
 
     // Creates a button that validates any input that are still unchecked, then inserts them into timetableData.
     // After that, allows user to proceed to the Exporting step.
-    createSubmitButton(timetableData, onComplete);
+    createSubmitButtonListener(timetableData, onComplete);
 }
 
 
 
 // Hides away the instructions and HTML input field.
-function hideInitialUI() {
+function hidePreviousUI() {
     let infoDisplay = document.getElementsByClassName("info-display")[0];
     let dataInput = document.getElementsByClassName("data-input")[0];
     collapseUI([infoDisplay, dataInput]);
@@ -67,14 +67,9 @@ function renderEditorTemplate() {
 
 
 
-// Creates button that onclick allows user to back to menu.
-function createBackButton() {
-    let backButtonDiv = document.getElementsByClassName("back-menu-btn")[0];
-
-    let backButton = document.createElement("button");
-    backButton.classList.add("btn", "main-text-btn", "fs-5");
-    backButton.textContent = "Back to Menu";
-
+// Add event listener to button that onclick allows user to back to menu.
+function createBackButtonListener() {
+    let backButton = document.getElementById("back-menu");
     backButton.addEventListener("click", () => {
         let infoDisplay = document.getElementsByClassName("info-display")[0];
         let dataInput = document.getElementsByClassName("data-input")[0];
@@ -83,8 +78,6 @@ function createBackButton() {
         let editorUI = document.getElementsByClassName("editor-ui")[0];
         collapseUI([editorUI], true);
     });
-
-    backButtonDiv.appendChild(backButton);
 }
 
 
@@ -423,20 +416,13 @@ function updateTimetablePreview(timetableData) {
 
 // The final part of edit-timetable.js 
 // If there is no problems with user inputs, let them proceed to the Exporting section.
-function createSubmitButton(timetableData, onComplete) {
-    let submitDiv = document.getElementsByClassName("submit-edit")[0];
-
-    let submitButton = document.createElement("button");
-    submitButton.classList.add("btn", "main-text-btn", "fs-5");
-    submitButton.textContent = "Finish Editing";
-
+function createSubmitButtonListener(timetableData, onComplete) {
+    let submitButton = document.getElementById("submit-edit");
     submitButton.addEventListener("click", () => {
         if (validateSemesterInfo(timetableData) === true) {
             onComplete(timetableData); // go to exporting step.
         }
     });
-
-    submitDiv.appendChild(submitButton);
 }
 
 // Helper function for createSubmitButton for validating inputs by user in Edit Semester Info section.

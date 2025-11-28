@@ -18,10 +18,11 @@
 <body class="main-bg">
     <div class="info-display container mt-6 mb-2 text-center fade show">
         <!-- (100vh - 6rem) to make the entire viewport the header since mt-6 is used-->
-        <header style="height: calc(100vh - 6rem);">
+        <header style="min-height: calc(100vh - 6rem);">
             <img src="./images/calendar-icon.png" alt="calendar-icon" class="mb-3 col-6 col-md-3">
             <h1 class="main-header-text fw-semibold display-1 mb-3">UTAR Timetable Maker</h1>
             <h2 class="main-body-text fw-normal mx-auto mb-6 col-md-6">Process your timetable in just a few clicks and makes it Google-Calendar ready along with customisable options.</h2>
+            <a href="https://github.com/Lambdadeltaaa/timetableUTAR" target="_blank" class="link-secondary mb-3 fs-5">View the source code</a><br>
             <img src="./images/arrow-down-icon.png" alt="arrow-down">
         </header>
 
@@ -32,13 +33,13 @@
             
             <p class="main-body-text fs-3 col-md-8 mx-auto">1. Log in to 
                 <a href="https://portal.utar.edu.my" target="_blank" class="link-primary">UTAR Portal</a>.</p>
-            <img src="./images/instructions-step1.png" alt="step1-visual-aid" class="col-12 col-md-8 border border-light border-3 rounded mb-6">
+            <img src="./images/parse-instructions-step1.png" alt="step1-visual-aid" class="col-12 col-md-8 border border-light border-3 rounded mb-6">
             
             <p class="main-body-text fs-3 col-md-8 mx-auto">2. Open up your timetable webpage.</p>
-            <img src="./images/instructions-step2.gif" alt="step2-visual-aid" class="col-12 col-md-8 border border-light border-3 rounded mb-6" loading="lazy">
+            <img src="./images/parse-instructions-step2.gif" alt="step2-visual-aid" class="col-12 col-md-8 border border-light border-3 rounded mb-6" loading="lazy">
 
             <p class="main-body-text fs-3 col-md-8 mx-auto">3. Press F12, or right click then select inspect to open developer tools. Click on the 'Console' tab.</p>
-            <img src="./images/instructions-step3.gif" alt="step3-visual-aid" class="col-12 col-md-8 border border-light border-3 rounded mb-6" loading="lazy">
+            <img src="./images/parse-instructions-step3.gif" alt="step3-visual-aid" class="col-12 col-md-8 border border-light border-3 rounded mb-6" loading="lazy">
 
             <p class="main-body-text fs-3 col-md-8 mx-auto">4. Copy the command below and paste it into the console.</p>
             <div class="code-snippet d-flex justify-content-center align-items-center gap-2 mb-3">
@@ -54,7 +55,7 @@
                     </svg>
                 </button>
             </div>
-            <img src="./images/instructions-step4.gif" alt="step4-visual-aid" class="col-12 col-md-8 border border-light border-3 rounded mb-6" loading="lazy">
+            <img src="./images/parse-instructions-step4.gif" alt="step4-visual-aid" class="col-12 col-md-8 border border-light border-3 rounded mb-6" loading="lazy">
 
             <p class="main-body-text fs-3 col-md-8 mx-auto">5. Timetable data output is now saved to your clipboard. Paste it below to begin processing.</p>
         </section>
@@ -71,21 +72,21 @@
 
 
     
-    <!-- This part below is dynamically generated from JavaScript. -->
+    <!-- This part had to be dynamically generated from JavaScript due to each timetable being different -->
     <div class="editor-ui fade d-none">
         <div class="parse-success-alert container mt-5 mb-5"></div> <!-- Refer to ./js/main.js -->
         <div class="data-edit container mt-5 mb-5"></div> <!-- Refer to ./js/edit-timetable.js -->
     </div>
     
     <template id="data-edit-template">
-        <h2 class="main-header-text fw-semibold display-2 text-center mb-5">Edit Your Timetable Settings</h1>
-        
-        <div class="row">
-            <div class="edit-timetable col-12 col-md-6 mb-5">
-                <div class="back-menu-btn mb-5">
-                    <!-- Back to menu button goes here -->
-                </div>
+        <header class="d-flex flex-column flex-md-row align-items-md-center justify-content-md-between mb-5">
+            <button id="back-menu" class="btn main-text-btn fs-5 mb-3 mb-md-0 fw-semibold align-self-start">Back to Menu</button>
+            <h2 class="main-header-text fw-semibold display-2 text-center mb-0">Edit Your Timetable Settings</h2>
+            <div class="spacer d-none d-md-block" style="width: 120px;"></div>
+        </header>
 
+        <section class="row">
+            <div class="edit-timetable col-12 col-md-6 mb-5">
                 <div class="edit-course-name mb-5">
                     <h3 class="secondary-header-text">Edit Course Name:</h3>
                 </div>
@@ -99,15 +100,60 @@
                     <h3 class="secondary-header-text">Semester Info:</h3>
                 </div>
 
-                <div class="submit-edit text-end mb-5">
-                    <!-- Submit button goes here -->
+                <div class="text-end mb-5">
+                    <button id="submit-edit" class="btn main-text-btn fs-5 fw-semibold">Finish Editing</button>
                 </div>
             </div>
             
             <div class="preview-timetable col-12 col-md-6 mb-5">
                 <h3 class="secondary-header-text">Timetable Preview:</h3>
             </div>
-        </div>
+        </section>
+    </template>
+
+
+
+    <!-- Refer to ./js-logic/export-timetable.js -->
+    <div class="export-ui container fade d-none mt-5 mb-5"></div>
+
+    <template id="export-ui-template">
+        <header class="d-flex flex-column flex-md-row align-items-md-center justify-content-md-between mb-7">
+            <button id="back-edit" class="btn main-text-btn mb-3 mb-md-0 fs-5 fw-semibold align-self-start">Back to Edit</button>
+            <h2 class="main-header-text fw-semibold display-2 text-center mb-0">Export Your Timetable</h2>
+            <div class="spacer d-none d-md-block" style="width: 120px;"></div>
+        </header>
+
+        <section>
+            <div class="export-buttons d-flex justify-content-center">
+                <div class="google-calendar text-center border border-light rounded p-4 mb-5">
+                    <img src="./images/google-calendar-icon.svg" alt="google-calendar-icon" class="w-75 mb-3"><br>
+                    <button id="export-csv" class="btn btn-success fs-5 fw-semibold mb-2 ">Export to Google Calendar</button>
+                    <p class="main-body-text mb-0">(Export as .csv file)</p>
+                </div>
+            </div>
+
+            <div class="export-alert mb-5"></div>
+
+            <hr style="color: lightgray">
+
+            <div class="import-instructions text-center mb-5">
+                <h3 class="main-header-text fw-semibold display-3 mb-5">How to Import?</h1>
+                
+                <p class="main-body-text fs-3 col-md-8 mx-auto">1. Open your
+                    <a href="https://calendar.google.com" target="_blank" class="link-primary">Google Calendar</a> and go to Settings.</p>
+                <img src="./images/import-google-step-1.png" alt="step1-visual-aid" class="col-12 col-md-8 border border-light border-3 rounded mb-6">
+
+                <p class="main-body-text fs-3 col-md-8 mx-auto">2. Go to the 'Add Calendar' section and then click 'Create new Calendar'. Create your new calendar.</p>
+                <img src="./images/import-google-step-2.png" alt="step2-visual-aid" class="col-12 col-md-8 border border-light border-3 rounded mb-6">
+
+                <p class="main-body-text fs-3 col-md-8 mx-auto">3. Under the 'Import & Export' section, go to 'Import' and upload the timetable you have
+                    downloaded. Select your newly created calendar from the dropdown list and press 'Import'.</p>
+                <img src="./images/import-google-step-3.png" alt="step3-visual-aid" class="col-12 col-md-8 border border-light border-3 rounded mb-6">
+
+                <p class="main-body-text fs-3 col-md-8 mx-auto">Congrats! Your timetable has been successfully implemented.</p>
+                <img src="./images/import-google-complete.png" alt="import-google-complete" class="col-12 col-md-8 border border-light border-3 rounded ">
+            </div>
+        </section>
     </template>
 
     <script type="module" src="./js-logic/main.js"></script>    

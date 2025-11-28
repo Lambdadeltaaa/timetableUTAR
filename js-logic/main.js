@@ -1,6 +1,6 @@
 import { parseHTML } from "./parse-timetable.js";
 import { renderTimetableEditor } from "./edit-timetable.js";
-import { renderExport } from "./export-timetable.js";
+import { renderExportScreen } from "./export-timetable.js";
 
 import { createAlertText, removeAlertText } from "../js-ui/ui-manager.js";
 
@@ -14,7 +14,7 @@ function main() {
     let timetableData = parseHTML(HTMLInput);
     if (handleParseResult(timetableData)) {
         renderTimetableEditor(timetableData, () => {
-            renderExport(timetableData);
+            renderExportScreen(timetableData);
         });
     }
 }
