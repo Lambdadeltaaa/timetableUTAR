@@ -53,6 +53,16 @@ timetableUTAR/
 
 
 
+## Roadmap
+
+- Implement React into the stack
+- Easier method to get HTML of timetable (reduce complexity)
+- Add even more customisation options
+- Able to export to other Calendar apps (eg. Apple Calendar)
+- Make exporting to Calendar apps even easier (maybe via APIs)
+
+
+
 ## Contributing
 
 Contributions are welcome! If you are a UTAR student and you want to help improve UTAR Timetable Maker, follow these steps:
