@@ -1,0 +1,66 @@
+/* -- Bootstrap margin addons -- */
+.mb-6 { margin-bottom: 6rem !important; }
+.mb-7 { margin-bottom: 7rem !important; }
+.mb-8 { margin-bottom: 8rem !important; }
+.mb-9 { margin-bottom: 9rem !important; }
+
+.mt-6 { margin-top: 6rem !important; }
+.mt-7 { margin-top: 7rem !important; }
+.mt-8 { margin-top: 8rem !important; }
+.mt-9 { margin-top: 9rem !important; }
+
+/* -- Bootstrap animation override -- */
+.fade {
+    transition: opacity 0.5s ease !important;
+}
+
+/* -- Some useful classes Bootstrap doesnt have --*/
+.text-wrap {
+    overflow-wrap: break-word; 
+    word-break: break-word;
+    min-width: 0;
+}
+
+.table-rounded {
+    border-collapse: separate !important;
+    border-spacing: 0;
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+
+
+/* -- User Defined classes -- */
+:root {
+  /* -- background -- */
+  --color-bg-main: radial-gradient(circle, #2c003e 0%, #000428 100%);
+  --color-bg-secondary: rgba(220, 179, 255, 0.15);
+
+  /* -- text -- */
+  --color-text-heading-main: #7f7fff;
+  --color-text-heading-secondary: #99ccff;
+  --color-text-body: lightgray;
+
+  /* -- actions -- */
+  --color-main: rgb(214, 51, 132);
+  --color-main-hover: rgb(214, 51, 132, 0.75);
+}
+
+
+.main-bg {
+  min-height: 100vh;
+  background: var(--color-bg-main);
+}
+.secondary-bg {
+  background-color: var(--color-bg-secondary);
+}
+
+.main-header-text {
+  color: var(--color-text-heading-main);
+}
+.secondary-header-text {
+  color: var(--color-text-heading-secondary);
+}
+
+.main-body-text {
+  color: var(--color-text-body);
+}

@@ -1,0 +1,6 @@
+.copyButton {
+    color: var(--color-main) !important;
+}
+.copyButton:hover {
+    background-color: var(--color-bg-secondary) !important;
+}
