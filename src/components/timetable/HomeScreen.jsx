@@ -10,9 +10,12 @@ export default function HomeScreen() {
     return (
         <header className={headerClass} style={headerStyle}>
             <img src={calendarIcon} alt="calendar-icon" className='mb-3 col-6 col-md-3' />
+            
             <h1 className="main-header-text fw-semibold display-1 mb-3">UTAR Timetable Maker</h1>
             <h2 className="main-body-text fw-normal mx-auto mb-6 col-md-6">Process your timetable in just a few clicks and makes it Google-Calendar ready along with customisable options.</h2>
-            <a href="https://github.com/Lambdadeltaaa/timetableUTAR" target="_blank" className="link-secondary mb-3 fs-5">View the source code</a><br></br>
+            
+            <a href="https://github.com/Lambdadeltaaa/timetableUTAR" target="_blank" className="link-secondary fs-5">View the source code</a>
+            <p className="text-secondary mb-3">This is an independent, unofficial tool and is not affiliated with or endorsed by UTAR.</p>
             <img src={arrowDownIcon} alt="arrow-down-icon"></img>
         </header>
     )
