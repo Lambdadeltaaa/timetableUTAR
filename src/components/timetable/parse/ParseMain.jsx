@@ -8,9 +8,9 @@ import ParseInput from "./ParseInput.jsx";
 import Alert from "../../common/Alert/Alert.jsx";
 
 // MAIN FUNCTION:
-// Process the input from <ParseInput />, then enrich with relevant info 
+// Process input from the parse input component, then enrich with relevant info 
 // After that, passes it to parent component and proceeds to "edit"
-// refer to enrichTimetableData function for object structure of timetableData
+// refer to both parseTimetableHTMl and enrichTimetableData functions for more further understanding of timetableData structure
 export default function ParseMain({ setTimetableData, changeScreen }) {
     const alertRef = useRef(null);
 

@@ -1,20 +1,27 @@
-/* 
-- INPUT: 
-    object timetableData
-        - timetableData.classInfos: example [{"courseCode": "MPU32013", "classLocation": "LDK3", ... }, ...]
-        - timetableData.courseNames: example {"FHMM1024": "MATHEMATICS II", "FHSC1034": "ORGANIC CHEMISTRY", ...}
-
-- OUTPUT:
-    IF SUCCESS:
-    adds the follow properties and method to object timetableData:
-        - timetableData.subjectItemsStatus = example {"courseCode": true, "classLocation": "false", ...}
-        - timetableData.subjectItemsOrder = example ["classLocation", "classGroup", ...]
-        - timetableData.semesterInfo = example {"semesterLength": 12, "startDate": 2025-11-03}
-        - timetableData.writeEventSubject
-
-    IF FAIL:
-    object {error: message to user}
-*/
+/**
+ * @param {Object} timetableData - The originally parsed timetable data object.
+ * 
+ * @returns {{
+ *  classInfos: Array<{
+ *      classLocation: string,
+ *      day: string,
+ *      courseCode: string,
+ *      classType: string,
+ *      classGroup: string,
+ *      startTime: string,
+ *      endTime: string
+ *  }>,
+ *  courseNames: {[courseCode: string]: string },
+ *  subjectItemsStatus: {[subjectItem: string]: boolean},       // Tracks which items is enabled to be written
+ *  subjectItemsOrder: Array<string>,                           // Defines the order of subject items to be written
+ *  semesterInfo: {semesterLength: number, startDate: string},  // Semester metadata
+ *  writeEventSubject: function(classInfo): string,             // Returns formatted event subject
+ * } | {
+ *  error: string
+ * }}
+ * - On success: returns enriched timetableData object with added properties/methods.
+ * - On failure: returns object with 'error' describing what went wrong.
+ */
 
 export default function enrichTimetableData(timetableData) {
     if (!timetableData || !timetableData.classInfos || !timetableData.courseNames) {
@@ -77,7 +84,6 @@ export default function enrichTimetableData(timetableData) {
             return `${yyyy}-${mm}-${dd}`;
         })()
     }
-
 
     return timetableData;
 }

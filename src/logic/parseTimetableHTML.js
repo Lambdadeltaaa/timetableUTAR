@@ -1,26 +1,37 @@
-/* 
-- INPUT: 
-    string HTMLInput, HTML document of user's timetable webpage
-
-- OUTPUT: 
-    parsing success: object timetableData, which includes
-        - timetableData.classInfos: example [{"courseCode": "MPU32013", "classLocation": "LDK3", ... }, ...]
-        - timetableData.courseNames: example {"FHMM1024": "MATHEMATICS II", "FHSC1034": "ORGANIC CHEMISTRY", ...}
-        
-    parsing fail: object { error: "message to user" }
-*/
-
+// Centralised configs for parsing, edit here if official timetable HTML changes.
+// REMEMBER to change the comments on ASSUMPTIONS for the functions if configs are edited. 
 const CLASSNAMES = {
     timetableTable: "tbltimetable",
     courseTable: "tblnoborder",
     dayHeader: "day",
     unitCell: "unit"
 };
-
 const TIMETABLE = {
     startHour: 7,
     periodDuration: 0.5
 };
+
+
+/**
+ * @param {string} HTMLInput - Raw HTML string copied from UTAR timetable page.
+ * 
+ * @returns {{
+ *  classInfos: Array<{
+ *      classLocation: string,
+ *      day: string,
+ *      courseCode: string,
+ *      classType: string,
+ *      classGroup: string,
+ *      startTime: string,
+ *      endTime: string
+ *  }>,
+ *  courseNames: {[courseCode: string]: string }    // maps courseCode -> courseName.
+ * } | {
+ *  error: string
+ * }}
+ * - On success: returns object with properties 'classInfos' and 'courseNames'
+ * - On failure: returns object with 'error' describing what went wrong.
+ */
 
 export default function parseTimetableHTML(HTMLInput) {
     let parser = new DOMParser();
@@ -115,13 +126,12 @@ function extractTimetableData(timetableHTML) {
     return classInfos;
 }
 
-// Helper function for extractTimetableData
-// Formats time in 24h format
+// Helper function for extractTimetableData, formats time in 24h format
 function formatTime(dayStartHour, currentPeriod, periodDuration) {
     let currentTime = dayStartHour + (currentPeriod * periodDuration);
     let hour = Math.trunc(currentTime);
     let minute = (currentTime % 1) * 60;
-    return `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`; // basically in HH:MM format
+    return `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`; 
 }
 
 

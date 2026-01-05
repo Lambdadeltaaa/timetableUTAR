@@ -1,12 +1,9 @@
-/*
-- INPUT: 
-    - object timetableData
-    - string format
-
-- OUTPUT:
-    - IF SUCCESS: object {success: message to user}
-    - IF FAIL: object {error: message to user}
-*/
+/**
+ * @param {Object} timetableData - The timetable data object.
+ * @param {string} format - Export format, e.g., 'csv' or 'ical'.
+ * 
+ * @returns {{success: string} | {error: string}} Returns an object with either a 'success' or 'error' message.
+ */
 
 export default function exportTimetableData(timetableData, format) {
     const formatsToFunctions = {
@@ -67,6 +64,8 @@ export default function exportTimetableData(timetableData, format) {
     // go to their specific function based on which file format user selected
     return formatsToFunctions[format.toLowerCase()]();
 }
+
+
 
 function exportAsCSV(formattedData) {
     const header = Object.keys(formattedData[0]);
