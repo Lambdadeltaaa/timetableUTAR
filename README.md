@@ -39,7 +39,6 @@ src/
 ├─ components/        
 │  ├─ common/                  # Reusable common components
 │  │   ├─ Alert/               
-│  │   ├─ CopyButton/ 
 │  │   └─ TextButton/ 
 │  │
 │  └─ timetable/               # Timetable components, each sections' entry point have 'Main' in their file names
@@ -61,7 +60,6 @@ src/
 - [x] Implement an easier version of retrieving user HTML
 - [ ] Ability to export to other Calendar apps (eg. Apple Calendar)
 - [ ] Add even more customisation options
-- [ ] Create Google Extension version
 
 
 
