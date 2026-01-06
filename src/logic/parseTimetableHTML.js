@@ -41,7 +41,7 @@ export default function parseTimetableHTML(HTMLInput) {
     let timetable = parsedDocument.getElementsByClassName(CLASSNAMES.timetableTable)[0];
     let courseTable = parsedDocument.getElementsByClassName(CLASSNAMES.courseTable)[0];
     if (!timetable || !courseTable) {
-        return { error: "Could not detect timetable. Make sure you have pasted the correct UTAR timetable webpage."};
+        return { error: "Could not detect timetable. Make sure you have uploaded the correct UTAR timetable HTML file."};
     }
 
     let days = timetable.getElementsByClassName(CLASSNAMES.dayHeader);

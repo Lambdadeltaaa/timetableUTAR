@@ -58,8 +58,8 @@ src/
 
 ## Roadmap
 - [x] Rewrite codebase in React
+- [x] Implement an easier version of retrieving user HTML
 - [ ] Ability to export to other Calendar apps (eg. Apple Calendar)
-- [ ] Implement an easier version of retrieving user HTML
 - [ ] Add even more customisation options
 - [ ] Create Google Extension version
 
