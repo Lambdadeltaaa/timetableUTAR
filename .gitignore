@@ -24,4 +24,4 @@ dist-ssr
 *.sw?
 
 # Testing files
-test-input.txt
+test-input.html
