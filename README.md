@@ -1,9 +1,9 @@
 # UTAR Timetable Maker
 A web app that allows UTAR students to convert their timetable from the UTAR portal into Google Calendar with customizable options like renaming courses and toggling event details.
 
-> **Disclaimer:** <br>
+> **⚠️ Disclaimer:** <br>
 > This project is an independent, unofficial tool and is not affiliated with, or endorsed by UTAR. <br>
-> Timetable data may be inaccurate. Always verify with the official school portal.
+> Desktop browsers only. Mobile and tablet devices are not supported.
 
 [Click here to open the web app:](https://lambdadeltaaa.github.io/timetableUTAR/)
 <p align="center">
