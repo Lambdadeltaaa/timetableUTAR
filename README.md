@@ -73,7 +73,7 @@ cd timetableUTAR
 
 2. Install dependencies:
 ```
-npm install
+npm ci
 ```
 
 3. Create a new branch for your work:
